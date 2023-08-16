@@ -33,11 +33,16 @@ public:
 		Head = nullptr;
 		cout << "LConstructor" << this << endl;
 	}
-	ForwardList(const ForwardList& other)
+	ForwardList(const ForwardList& other):ForwardList()
 	{
-		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext)
-			push_back(Temp->Data);
+		/*for (Element* Temp = other.Head; Temp; Temp = Temp->pNext)
+			push_back(Temp->Data);*/
 		cout << "LConstructor: \t" << this << endl;
+		*this = other;
+	}
+	ForwardList(ForwardList&& other)
+	{
+
 	}
 	~ForwardList()
 	{
@@ -130,6 +135,7 @@ ForwardList operator+(const ForwardList& left, const ForwardList& right)
 }
 
 //#define BASE_CHECK
+//#define OPERATOR_PLUS_CHECK
 
 void main()
 {
@@ -178,4 +184,7 @@ void main()
 	list2.push_back(55);
 	list2.push_back(89);
 	list2.print();
+
+	ForwardList list3 = list1 + list2;
+	list3.print();
 }
