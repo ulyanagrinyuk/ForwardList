@@ -40,10 +40,10 @@ public:
 		cout << "LConstructor: \t" << this << endl;
 		*this = other;
 	}
-	ForwardList(ForwardList&& other)
+	/*ForwardList(ForwardList&& other)
 	{
-
-	}
+		cout << "MoveConstructor: \t" << this << endl;
+	}*/
 	~ForwardList()
 	{
 		while (Head)pop_front();
