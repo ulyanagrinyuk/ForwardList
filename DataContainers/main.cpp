@@ -161,43 +161,7 @@ public:
 		Element* erased = Temp->pNext;
 		Temp->pNext = Temp->pNext->pNext;
 		delete erased;
-	}
-	/*void insert(int Data, int Index)
-	{
-		if (Index == 0)return push_front(Data);
-		Element* Temp = Head;
-		for (int i = 0; i < Index - 1; i++)
-			if (Temp->pNext)
-				Temp = Temp->pNext;
-		Element* New = new Element(Data);
-		New->pNext = Temp->pNext;
-		Temp->pNext = New;
-	}*/
-	//					Delete elements:
-	/*void pop_front()
-	{
-		Element* erased = Head;
-		Head = Head->pNext;
-		delete erased;
-	}
-	void pop_back()
-	{
-		Element* Temp = Head;
-		while (Temp->pNext->pNext)Temp = Temp->pNext;
-		delete Temp->pNext;
-		Temp->pNext = 0;
-	}
-	void erase(int Index)
-	{
-		if (Index == 0)return pop_front();
-		Element* Temp = Head;
-		for (int i = 0; i < Index - 1; i++)
-			if (Temp->pNext)
-				Temp = Temp->pNext;
-		Element* erased = Temp->pNext;
-		Temp->pNext = Temp->pNext->pNext;
-		delete erased;
-	}*/
+	}	
 	//					Methods:
 	void print()const
 	{
