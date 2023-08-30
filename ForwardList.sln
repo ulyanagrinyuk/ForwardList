@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DataContainers", "DataConta
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "List2", "List2\List2.vcxproj", "{2A3DB21A-21B1-4E5D-8157-6C9431FD39CB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BinaryTree", "BinaryTree\BinaryTree.vcxproj", "{2DF7CFE3-25E4-45C7-924E-3C7AD2E6D9E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{2A3DB21A-21B1-4E5D-8157-6C9431FD39CB}.Release|x64.Build.0 = Release|x64
 		{2A3DB21A-21B1-4E5D-8157-6C9431FD39CB}.Release|x86.ActiveCfg = Release|Win32
 		{2A3DB21A-21B1-4E5D-8157-6C9431FD39CB}.Release|x86.Build.0 = Release|Win32
+		{2DF7CFE3-25E4-45C7-924E-3C7AD2E6D9E8}.Debug|x64.ActiveCfg = Debug|x64
+		{2DF7CFE3-25E4-45C7-924E-3C7AD2E6D9E8}.Debug|x64.Build.0 = Debug|x64
+		{2DF7CFE3-25E4-45C7-924E-3C7AD2E6D9E8}.Debug|x86.ActiveCfg = Debug|Win32
+		{2DF7CFE3-25E4-45C7-924E-3C7AD2E6D9E8}.Debug|x86.Build.0 = Debug|Win32
+		{2DF7CFE3-25E4-45C7-924E-3C7AD2E6D9E8}.Release|x64.ActiveCfg = Release|x64
+		{2DF7CFE3-25E4-45C7-924E-3C7AD2E6D9E8}.Release|x64.Build.0 = Release|x64
+		{2DF7CFE3-25E4-45C7-924E-3C7AD2E6D9E8}.Release|x86.ActiveCfg = Release|Win32
+		{2DF7CFE3-25E4-45C7-924E-3C7AD2E6D9E8}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
