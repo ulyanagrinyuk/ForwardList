@@ -59,6 +59,10 @@ public:
 	{
 		insert(Data, Root);		
 	}
+	void erase(int Data)
+	{
+		erase(Data, Root);
+	}
 
 	void Clear()
 	{
@@ -111,6 +115,34 @@ private:
 			else insert(Data, Root->pRight);
 		}
 	}
+	void erase(int Data, Element*& Root)
+	{
+		if (Root == nullptr)return;
+		erase(Data, Root->pLeft);
+		erase(Data, Root->pRight);
+		if (Data == Root->Data)
+		{
+			if (Root->pLeft == Root->pRight)
+			{
+				delete Root;
+				Root = nullptr;
+			}
+			else
+			{
+				if (Count(Root->pLeft) > Count(Root->pRight))
+				{
+					Root->Data = maxValue(Root->pLeft);
+					erase(maxValue(Root->pLeft), Root->pLeft);
+				}
+				else
+				{
+					Root->Data = minValue(Root->pRight);
+					erase(maxValue(Root->pRight), Root->pRight);
+				}
+			}
+		}
+	}
+
 	void Clear(Element* Root)
 	{
 		if (Root == nullptr)return;
@@ -178,7 +210,17 @@ public:
 	}
 };
 
+template<typename T>void measure(const char* message, const Tree& tree, T(Tree::*member_function)()const)
+{
+	cout << message;
+	clock_t start = clock();
+	T value = (tree.*member_function)();
+	clock_t end = clock();
+	cout << value << "Выполнено за " << double(end-start) / CLOCKS_PER_SEC <<  "секунд \n";
+}
+
 #define BASE_CHECK
+//#define OLD_PREFOREMANCE_CHECK
 //#define DEPTH_CHECK
 
 void main()
@@ -194,6 +236,8 @@ void main()
 		tree.insert(rand() % 100);
 	}
 	clock_t end = clock();
+	tree.print();
+#ifdef OLD_PREFOREMANCE_CHECK
 	cout << "Дерево заполнено за " << double(end - start) / CLOCKS_PER_SEC << "секунд \n";
 	//tree.print();
 	cout << endl;
@@ -221,13 +265,21 @@ void main()
 	end = clock();
 	cout << clock << ", вычислено за " << double(end - start) / CLOCKS_PER_SEC << "секунд \n";
 	/////////////////////////////////////////////////////////////////////
-	cout << "Глубина дерева: " ;
+	cout << "Глубина дерева: ";
 	start = clock();
 	int depth = tree.count();
 	end = clock();
 	cout << depth << ", вычислено за " << double(end - start) / CLOCKS_PER_SEC << "секунд \n";
 
+#endif // OLD_PREFOREMANCE_CHECK
 
+	measure("Минимальное значение в дереве: ", tree, &Tree::minValue);
+	measure("Максимальное значение в дереве: ", tree, &Tree::maxValue);
+	measure("Сумма элементов дерева\t\t, ", tree, &Tree::sum);
+	measure("Количество элементов дерева: ", tree, &Tree::count);
+	measure("Глубина дерева: ", tree, &Tree::Depth);
+
+	cout << "=====================   UniqueTree =================" << endl;
 	UniqueTree u_tree;
 	for (int i = 0; i < n; i++)
 	{
@@ -236,7 +288,7 @@ void main()
 	/*u_tree.print();*/
 	cout << "Минимальное значение в дереве: " << u_tree.minValue() << endl;
 	cout << "Максимальное значение в дереве: " << u_tree.maxValue() << endl;
-	cout << "Сумма элементов дерева\t\t" << u_tree.sum() << endl;
+	cout << "Сумма элементов дерева\t\t " << u_tree.sum() << endl;
 	cout << "Количество элементов дерева: " << u_tree.count() << endl;
 	cout << "Глубина дерева: " << u_tree.Depth() << endl;
 #endif // BASE_CHECK
@@ -246,4 +298,9 @@ void main()
 	tree.print();
 	cout << "Глубина дерева: " << tree.Depth() << endl;
 #endif // DEPTH_CHECK
+
+	int value;
+	cout << "Введите удаляемое значение: "; cin >> value;
+	tree.erase(value);
+	tree.print();
 }
