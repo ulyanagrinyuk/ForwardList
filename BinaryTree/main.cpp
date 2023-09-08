@@ -53,8 +53,8 @@ public:
 #ifdef DEBUG
 		cout << "TDestructor:\t" << this << endl;
 #endif // DEBUG
-
 	}
+
 	void insert(int Data)
 	{
 		insert(Data, Root);		
@@ -98,6 +98,18 @@ public:
 	{
 		print(Root);
 		cout << endl;
+	}
+	void depth_print(int depth)const
+	{
+		depth_print(Root, depth, 64);
+	}
+	void tree_print()const
+	{
+		tree_print(Root, 64);
+	}
+	void balance()
+	{
+		balance(Root);
 	}
 private:
 	void insert(int Data, Element* Root)
@@ -184,6 +196,57 @@ private:
 		cout << Root->Data << "\t";
 		print(Root->pRight);
 	}
+	void depth_print(Element* Root, int depth, int width)const
+	{
+		if (Root == nullptr)
+		{
+			if(depth == 0)cout.width(width *pow(2, (this->Depth() - depth)/3));
+			cout << "";
+			return;
+		}
+		if (depth == 0)
+		{
+			cout.width(width);
+			cout << Root->Data;
+			cout.width(width);
+			cout << " ";
+		}
+		depth_print(Root->pLeft, depth - 1, width);
+		depth_print(Root->pRight, depth - 1, width);
+	}
+	void tree_print(Element* Root, int width, int depth = 0)const
+	{
+		if (Root == nullptr)return;
+		if (depth >= this->Depth())return;
+		depth_print(Root, depth, width);
+		cout << endl;
+		cout << endl;
+		cout << endl;
+		cout << endl;
+		tree_print(Root, width / 2, depth + 1);
+	}
+	void balance(Element* Root)
+	{
+		if (Root == nullptr)return;
+		if (abs(Count(Root->pLeft) - Count(Root->pRight)) < 2)return;
+		if (Count(Root->pLeft) < Count(Root->pRight))
+		{
+			if(Root->pLeft)insert(Root->Data, Root->pLeft);
+			else Root->pLeft = new Element(Root->Data);
+			Root->Data = minValue(Root->pRight);
+			erase(minValue(Root->pRight), Root->pRight);
+		}
+		else
+		{
+			if (Root->pRight)insert(Root->Data, Root->pRight);
+			else Root->pRight= new Element(Root->Data);
+			Root->Data = maxValue(Root->pLeft);
+			erase(maxValue(Root->pLeft), Root->pLeft);
+		}
+		balance(Root->pLeft);
+		balance(Root->pRight);
+		balance(Root);
+	}
 };
 
 class UniqueTree :public Tree
@@ -219,9 +282,10 @@ template<typename T>void measure(const char* message, const Tree& tree, T(Tree::
 	cout << value << "Выполнено за " << double(end-start) / CLOCKS_PER_SEC <<  "секунд \n";
 }
 
-#define BASE_CHECK
+//#define BASE_CHECK
 //#define OLD_PREFOREMANCE_CHECK
 //#define DEPTH_CHECK
+#define BALANCE_CHECK
 
 void main()
 {
@@ -294,13 +358,24 @@ void main()
 #endif // BASE_CHECK
 #ifdef DEPTH_CHECK
 
-	Tree tree = { 50, 25, 75, 16, 32, 64, 90, 28, 29 };
+	Tree tree = { 50, 25, 75, 16, 32, 17, 64, 90, 28, 29 };
 	tree.print();
 	cout << "Глубина дерева: " << tree.Depth() << endl;
-#endif // DEPTH_CHECK
 
-	int value;
+	/*int value;
 	cout << "Введите удаляемое значение: "; cin >> value;
 	tree.erase(value);
-	tree.print();
+	tree.print();*/
+
+	int depth;
+	/*cout << "Введите глубину дерева: "; cin >> depth;
+	tree.depth_print(depth);*/
+	tree.tree_print();
+#endif // DEPTH_CHECK
+
+	Tree tree = { 89, 55, 34, 21, 13, 8, 5, 3 };
+	tree.tree_print();
+	tree.balance();
+	tree.tree_print();
+
 }
