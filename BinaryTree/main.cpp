@@ -4,21 +4,24 @@ using std::cout;
 using std::cin;
 using std::endl;
 
-class Tree
+template<class T> class Tree;
+template<typename T> class UniqueTree;
+
+template<typename T>class Tree
 {
 protected:
 	class Element
 	{
-		int Data;
+		T Data;
 		Element* pLeft;
 		Element* pRight;
 	public:
-		Element(int Data, Element* pLeft = nullptr, Element* pRight = nullptr)
+		Element(T Data, Element* pLeft = nullptr, Element* pRight = nullptr)
 			:Data(Data), pLeft(pLeft), pRight(pRight)
 		{
 #ifdef DEBUG
 			cout << "EConstructor:\t" << this << endl;
-#endif // DEBUG
+#endif // DEBUGð
 
 		}
 		~Element()
@@ -29,7 +32,7 @@ protected:
 
 		}
 		friend class Tree;
-		friend class UniqueTree;
+		friend class UniqueTree<T>;
 	}*Root;
 public:
 	Element* getRoot()
@@ -43,9 +46,9 @@ public:
 #endif // DEBUG
 
 	}
-	Tree(const std::initializer_list<int>& il) : Tree()
+	Tree(const std::initializer_list<T>& il) : Tree()
 	{
-		for (int i : il)insert(i, Root);
+		for (T i : il)insert(i, Root);
 	}
 	~Tree()
 	{
@@ -55,11 +58,11 @@ public:
 #endif // DEBUG
 	}
 
-	void insert(int Data)
+	void insert(T Data)
 	{
 		insert(Data, Root);		
 	}
-	void erase(int Data)
+	void erase(T Data)
 	{
 		erase(Data, Root);
 	}
@@ -112,7 +115,7 @@ public:
 		balance(Root);
 	}
 private:
-	void insert(int Data, Element* Root)
+	void insert(T Data, Element* Root)
 	{
 		if (this->Root == nullptr)this->Root = new Element(Data);
 		if (Root == nullptr)return;
@@ -127,7 +130,7 @@ private:
 			else insert(Data, Root->pRight);
 		}
 	}
-	void erase(int Data, Element*& Root)
+	void erase(T Data, Element*& Root)
 	{
 		if (Root == nullptr)return;
 		erase(Data, Root->pLeft);
@@ -155,7 +158,7 @@ private:
 		}
 	}
 
-	void Clear(Element* Root)
+	template<typename T>void Clear(Element* Root)
 	{
 		if (Root == nullptr)return;
 		Clear(Root->pLeft);
@@ -165,8 +168,8 @@ private:
 	int Depth(Element* Root)const
 	{
 		if (Root == nullptr)return 0;
-		int l_depth = Depth(Root->pLeft) + 1;
-		int r_depth = Depth(Root->pRight) + 1;
+		T l_depth = Depth(Root->pLeft) + 1;
+		T r_depth = Depth(Root->pRight) + 1;
 		return l_depth < r_depth + 1 ? l_depth : r_depth;
 	}	
 	int Sum(Element* Root)const
@@ -196,7 +199,7 @@ private:
 		cout << Root->Data << "\t";
 		print(Root->pRight);
 	}
-	void depth_print(Element* Root, int depth, int width)const
+	void depth_print(Element* Root, T depth, T width)const
 	{
 		if (Root == nullptr)
 		{
@@ -214,7 +217,7 @@ private:
 		depth_print(Root->pLeft, depth - 1, width);
 		depth_print(Root->pRight, depth - 1, width);
 	}
-	void tree_print(Element* Root, int width, int depth = 0)const
+	void tree_print(Element* Root, T width, T depth = 0)const
 	{
 		if (Root == nullptr)return;
 		if (depth >= this->Depth())return;
@@ -249,31 +252,31 @@ private:
 	}
 };
 
-class UniqueTree :public Tree
+template<typename T>class UniqueTree :public Tree<T>
 {
 public:
-	void insert(int Data)
+	void insert(T Data)
 	{
-		insert(Data, Root);
+		insert(Data, Tree<T>::Root);
 	}
-	void insert(int Data, Element* Root)
+	void insert(T Data, Tree<T>::Element* Root)
 	{
-		if (this->Root == nullptr)this->Root = new Element(Data);
+		if (this->Root == nullptr)this->Root = new Tree::Element(Data);
 		if (Root == nullptr)return;
 		if (Data < Root->Data)
 		{
-			if (Root->pLeft == nullptr)Root->pLeft = new Element(Data);
+			if (Root->pLeft == nullptr)Root->pLeft = new Tree::Element(Data);
 			else insert(Data, Root->pLeft);
 		}
 		else if(Data < Root->Data)
 		{
-			if (Root->pRight == nullptr)Root->pRight = new Element(Data);
+			if (Root->pRight == nullptr)Root->pRight = new Tree::Element(Data);
 			else insert(Data, Root->pRight);
 		}
 	}
 };
 
-template<typename T>void measure(const char* message, const Tree& tree, T(Tree::*member_function)()const)
+template<typename T>void measure(const char* message, const Tree<T>& tree, T(Tree<T>::*member_function)()const)
 {
 	cout << message;
 	clock_t start = clock();
@@ -372,10 +375,10 @@ void main()
 	tree.depth_print(depth);*/
 	tree.tree_print();
 #endif // DEPTH_CHECK
-
-	Tree tree = { 89, 55, 34, 21, 13, 8, 5, 3 };
+#ifdef BALANCE_CHECKDEBUG
+	Tree<int> tree = { 89, 55, 34, 21, 13, 8, 5, 3 };
 	tree.tree_print();
 	tree.balance();
 	tree.tree_print();
-
+#endif // BALANCE_CHECKDEBUG
 }
